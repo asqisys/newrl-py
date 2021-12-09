@@ -8,7 +8,7 @@ setup(
   author = 'Kousthub Raja',
   author_email = 'kousthub@asqi.in',
   url = 'https://github.com/asqi/newrl',
-  download_url = 'https://github.com/asqi/newrl',
+  download_url = 'https://github.com/asqisys/newrl-py/archive/refs/tags/v_02.tar.gz',
   keywords = ['newrl', 'blockchain', 'client'],
   install_requires=[],
   classifiers=[
