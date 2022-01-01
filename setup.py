@@ -6,7 +6,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 setup(
   name = 'newrl',
   packages = ['newrl'],
-  version = '0.2.1',
+  version = '0.2.4',
   license='MIT',
   description = 'Python SDK for Newrl blockchain',
   long_description=long_description,
