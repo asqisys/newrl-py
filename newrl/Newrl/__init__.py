@@ -1,1 +1,0 @@
-from Newrl.hash import get_file_hash
