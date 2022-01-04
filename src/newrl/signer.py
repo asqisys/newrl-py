@@ -17,7 +17,7 @@ def sign_transaction(wallet_data, transaction_data):
     # if not addresschecker(transaction_data, address):
     #     return False
 
-    msg = json.dumps(transaction_data).encode()
+    msg = json.dumps(transaction_data['transaction']).encode()
     sk = ecdsa.SigningKey.from_string(pvtkeybytes, curve=ecdsa.SECP256k1)
     msgsignbytes = sk.sign(msg)
     msgsign = base64.b64encode(msgsignbytes).decode('utf-8')
