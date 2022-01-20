@@ -23,7 +23,6 @@ def generate_wallet_address():
         private_key_bytes, curve=ecdsa.SECP256k1).verifying_key
 
     key_bytes = key.to_string()
-    public_key = codecs.encode(key_bytes, 'hex')
 
     # the below section is to enable serialization while passing the keys through json
     private_key_final = base64.b64encode(private_key_bytes).decode('utf-8')

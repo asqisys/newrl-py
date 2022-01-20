@@ -11,3 +11,13 @@ def get_file_hash(file_path):
                 break
             h.update(chunk)
     return h.hexdigest()
+
+
+def get_memory_file_hash(file_object):
+    h = hashlib.sha256()
+    while True:
+        chunk = file_object.read(h.block_size)
+        if not chunk:
+            break
+        h.update(chunk)
+    return h.hexdigest()

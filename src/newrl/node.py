@@ -43,6 +43,7 @@ class Node():
 
     def add_token(
         self,
+        token_code: str,
         token_name: str,
         token_type: str,
         first_owner: str,
@@ -55,6 +56,7 @@ class Node():
         is_smart_contract_token: bool = False,
     ):
         data = {
+            'token_code': token_code,
             'token_name': token_name,
             'token_type': token_type,
             'first_owner': first_owner,
