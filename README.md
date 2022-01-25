@@ -15,7 +15,7 @@ pip install newrl
 A node address along with port can be given to initialise a new node connection. If no address is provided, the default newrl foundation node at address `http://newrl.net:8090` will be used.
 
 ```python
-node = Node('http://3.6.236.206:8090/')
+node = Node('http://3.6.236.206:8090')
 ```
 
 ### Off chain operations
