@@ -2,7 +2,7 @@ import requests
 
 
 class Node():
-    def __init__(self, url='http://newrl.net:8090'):
+    def __init__(self, url='http://testnet.newrl.net:8182'):
         self.url = url
 
     def get_balance(self, balance_type, wallet_address, token_code):
@@ -116,7 +116,52 @@ class Node():
             raise Exception('Error calling node: ', response.text)
         return response.text
 
+    def add_sc(self,  
+        sc_address: str,
+        sc_name:str,
+        version: str,
+        creator: str,
+        actmode: str,
+        signatories: dict={},
+        contractspecs: dict={},
+        legalparams: dict={}
+    ):
+        data = {
+            'sc_address': sc_address,
+            'sc_name': sc_name,
+            'version': version,
+            'creator': creator,
+            'actmode': actmode,
+            'signatories': signatories,
+            'contractspecs': contractspecs,
+            'legalparams': legalparams
+        }
 
+        add_sc_path = '/add-sc'
+        response = requests.post(self.url + add_sc_path, json=data)
+        if response.status_code != 200:
+            raise Exception('Error calling node: ', response.text)
+        return response.json()
+
+    def call_sc(self,
+        sc_address: str,
+        function_called: str,
+        signers: list=[],
+        params: dict={}
+    ):
+        data = {
+            'sc_address': sc_address,
+            'function_called': function_called,
+            'signers': signers,
+            'params': params
+        }
+
+        call_sc_path = '/call-sc'
+        response = requests.post(self.url + call_sc_path, json=data)
+        if response.status_code != 200:
+            raise Exception('Error calling node: ', response.text)
+        return response.json()
+    
 # Basic tests during dev - To be refactored to tests
 if __name__ == '__main__':
     node = Node()
