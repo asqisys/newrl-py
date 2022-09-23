@@ -20,7 +20,7 @@ def test_token_creation():
 
 def test_add_wallet():
     wallet_transaction = add_wallet_transaction(
-        'CcGRdIzGC0ODmycwg8xWWBHCb1zlSxftS0oXxh561riA/HrDCBucDPKHVuohzlAXibWej5ED82aMzyyGEIYo7g==',
+        '09c191748cc60b43839b273083cc565811c26f5ce54b17ed4b4a17c61e7ad6b880fc7ac3081b9c0df28756ea21ce501789b59e8f9103f3668ccf2c86108628ee',
         '0x001'
     )
 

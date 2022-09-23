@@ -5,33 +5,46 @@ import base64
 from Crypto.Hash import keccak
 
 
-def get_address_from_public_key(public_key):
-    public_key_bytes = base64.b64decode(public_key)
+def get_address_from_public_key(public_key_hex):
+    public_key_bytes = bytes.fromhex(public_key_hex)
 
-    hash = keccak.new(digest_bits=256)
-    hash.update(public_key_bytes)
-    keccak_digest = hash.hexdigest()
+    wallet_hash = keccak.new(digest_bits=256)
+    wallet_hash.update(public_key_bytes)
+    keccak_digest = wallet_hash.hexdigest()
 
     address = '0x' + keccak_digest[-40:]
     return address
 
 
-def generate_wallet_address():
-    private_key_bytes = os.urandom(32)
-    keydata = {'public': None, 'private': None, 'address': None}
+def get_wallet_from_private(private_key_hex):
+    private_key_bytes = bytes.fromhex(private_key_hex)
+    key_data = {'public': None, 'private': None, 'address': None}
     key = ecdsa.SigningKey.from_string(
         private_key_bytes, curve=ecdsa.SECP256k1).verifying_key
-
     key_bytes = key.to_string()
 
-    # the below section is to enable serialization while passing the keys through json
-    private_key_final = base64.b64encode(private_key_bytes).decode('utf-8')
-    public_key_final = base64.b64encode(key_bytes).decode('utf-8')
-    keydata['address'] = get_address_from_public_key(public_key_final)
-    keydata['private'] = private_key_final
-    keydata['public'] = public_key_final
+    private_key_hex = private_key_bytes.hex()
+    public_key_hex = key_bytes.hex()
+    key_data['address'] = get_address_from_public_key(public_key_hex)
+    key_data['private'] = private_key_hex
+    key_data['public'] = public_key_hex
+    return key_data
 
-    return keydata
+
+def generate_wallet_address():
+    private_key_bytes = os.urandom(32)
+    key_data = {'public': None, 'private': None, 'address': None}
+    key = ecdsa.SigningKey.from_string(
+        private_key_bytes, curve=ecdsa.SECP256k1).verifying_key
+    key_bytes = key.to_string()
+
+    private_key_hex = private_key_bytes.hex()
+    public_key_hex = key_bytes.hex()
+    key_data['address'] = get_address_from_public_key(public_key_hex)
+    key_data['private'] = private_key_hex
+    key_data['public'] = public_key_hex
+    return key_data
+
 
 def generate_contract_address():
     private_key_bytes = os.urandom(32)
@@ -46,4 +59,4 @@ def generate_contract_address():
     # this overwrites the None value in the init call, whenever on-chain contract is setup
     address = 'ct' + keccak_digest[-40:]
     return address
-    
+
