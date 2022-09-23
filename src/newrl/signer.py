@@ -4,47 +4,19 @@ import json
 
 
 def sign_transaction(wallet_data, transaction_data):
-    pvtkeybytes = None
-    pubkeybytes = None
-
     address = wallet_data['address']
-    pvtkeybytes = base64.b64decode(wallet_data['private'])
-    pubkeybytes = base64.b64decode(wallet_data['public'])
-    if not pvtkeybytes:
+    private_key_bytes = bytes.fromhex(wallet_data['private'])
+    if not private_key_bytes:
         print("No private key found for the address")
         return False
 
-    # if not addresschecker(transaction_data, address):
-    #     return False
-
     msg = json.dumps(transaction_data['transaction']).encode()
-    sk = ecdsa.SigningKey.from_string(pvtkeybytes, curve=ecdsa.SECP256k1)
+    sk = ecdsa.SigningKey.from_string(private_key_bytes, curve=ecdsa.SECP256k1)
     msgsignbytes = sk.sign(msg)
-    msgsign = base64.b64encode(msgsignbytes).decode('utf-8')
+    msgsign = msgsignbytes.hex()
     signatures = transaction_data['signatures'] if 'signatures' in transaction_data else [
     ]
     signatures.append({'wallet_address': address, 'msgsign': msgsign})
-    # print("signed msg signature is:", signtransbytes,
-    #       " and address is ", address)
-    # signtrans = base64.b64encode(signtransbytes).decode('utf-8')
-
-    # transaction_all = {'transaction': transaction_data,
-    #                        'signatures': signatures}
-
-
-#	print("storing this in encoded form is:",signtrans)
-    # if signtrans:
-    #     transaction_file = tm.dumptransaction()
-    #     print("Successfully signed the transaction and updated its signatures data.")
-    #     sign_status = tm.verifysign(signtrans, pubkeybytes, address)
-    #     print("Status of signing: ", sign_status)
-    #     with open(transaction_file) as f:
-    #         return json.load(f)
-    #     # return FileResponse(transfile, filename="signed_transferfile.json")
-    #     # return sign_status
-    # else:
-    #     print("Signing failed. No change made to transaction's signature data")
-    #     return None
 
     return transaction_data
 
