@@ -65,10 +65,10 @@ class Node():
             "wallet_public" : str,
             "wallet_private" : null,
             "custodian_wallet" : str,
-            "kyc_docs" : [{
+            "kyc_docs" : '[{
                 "type" : int,
                 "hash" : str
-            }],
+            }]',
             "owner_type" : int,
             "jurisdiction" int,
             "specific data" : dict,
@@ -107,8 +107,8 @@ class Node():
             "sc_flag" : int
             "disallowed" : null
             "tokendecimal" : int 
-            parent_transaction_code" : null,
-            "token_attribute" : dict
+            "parent_transaction_code" : null,
+            "token_attribute" : '{}'
         } 
         """
         path = F'/get-token?token_code={token_code}'
