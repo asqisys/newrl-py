@@ -52,3 +52,15 @@ def getvalidadds(transaction):
     if ttype == 5:  # one way transfer; only sender1 is needed to sign
         validadds.append(trans['specific_data']['wallet1'])
     return validadds
+
+
+def verify_sign(data, signature, public_key):
+    public_key_bytes = bytes.fromhex(public_key)
+    sign_trans_bytes = bytes.fromhex(signature)
+    vk = ecdsa.VerifyingKey.from_string(
+        public_key_bytes, curve=ecdsa.SECP256k1)
+    message = json.dumps(data).encode()
+    try:
+        return vk.verify(sign_trans_bytes, message)
+    except:
+        return False
