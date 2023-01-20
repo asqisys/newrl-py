@@ -18,6 +18,8 @@ def sign_transaction(wallet_data, transaction_data):
     ]
     signatures.append({'wallet_address': address, 'msgsign': msgsign})
 
+    transaction_data['signatures'] = signatures
+
     return transaction_data
 
 
