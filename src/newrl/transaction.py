@@ -140,6 +140,7 @@ def add_smart_contract_transaction(
     creator: str,
     signatories: dict,
     contractspecs: dict,
+    sc_function : str = 'setup',
     actmode: str = "hybrid",
     legalparams: dict = {},
 ) -> dict:
@@ -161,7 +162,7 @@ def add_smart_contract_transaction(
 
     transaction_data = {
         "address": sc_address,
-        "function": "setup",
+        "function": sc_function,
         "signers": [creator],
         "params": smart_contract_data
     }
