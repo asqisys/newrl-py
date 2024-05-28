@@ -20,7 +20,7 @@ class Node():
             If the passed URL for the node cannot be found 
         """
         path = F'/get-block?block_index={block_index}'
-        response = requests.get(self.url + path)
+        response = requests.get(self.url + path, timeout=1)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
@@ -40,7 +40,7 @@ class Node():
             If the passed URL for the node cannot be found
         """
         path = F'/get-transaction?transaction_code={transaction_code}'
-        response = requests.get(self.url + path)
+        response = requests.get(self.url + path, timeout=1)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
@@ -76,7 +76,7 @@ class Node():
         }
         """
         path = F'/get-wallet?wallet_address={wallet_address}'
-        response = requests.get(self.url + path)
+        response = requests.get(self.url + path, timeout=1)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
@@ -112,7 +112,7 @@ class Node():
         } 
         """
         path = F'/get-token?token_code={token_code}'
-        response = requests.get(self.url + path)
+        response = requests.get(self.url + path, timeout=1)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
@@ -143,7 +143,7 @@ class Node():
         }
         """
         balance_path = F'/get-balances?balance_type={balance_type}&token_code={token_code}&wallet_address={wallet_address}'
-        response = requests.get(self.url + balance_path)
+        response = requests.get(self.url + balance_path, timeout=1)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
@@ -163,7 +163,7 @@ class Node():
 
         """
         path = F'/get-contract?contract_address={contract_address}'
-        response = requests.get(self.url + path)
+        response = requests.get(self.url + path, timeout=1)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
@@ -209,30 +209,31 @@ class Node():
 
         """
         path = F'/get-trustscore-pid?src_wallet_address={src_wallet_address}&dst_wallet_address={dst_wallet_address}'
-        response = requests.get(self.url + path)
+        response = requests.get(self.url + path, timeout=1)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
     def get_sc_state(self, sc_state, contract_address, lookup_field, lookup_value):
         response = requests.get(
-            self.url + f"/sc-state?table_name={sc_state}&contract_address={contract_address}&unique_column={lookup_field}&unique_value={lookup_value}")
+            self.url + f"/sc-state?table_name={sc_state}&contract_address={contract_address}&unique_column={lookup_field}&unique_value={lookup_value}",
+            timeout=1)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def submit_transaction(self, transaction):
+    def submit_transaction(self, transaction, timeout=1):
         path = '/submit-transaction'
         response = requests.post(
-            self.url + path, json=transaction)
+            self.url + path, json=transaction, timeout=timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def submit_transactions(self, transactions):
+    def submit_transactions(self, transactions, timeout=1):
         path = '/submit-transaction-batch'
         response = requests.post(
-            self.url + path, json=transactions)
+            self.url + path, json=transactions, timeout=timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
