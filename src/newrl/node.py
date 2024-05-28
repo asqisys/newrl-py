@@ -5,8 +5,7 @@ class Node():
     def __init__(self, url='http://devnet.newrl.net:8420'):
         self.url = url
 
-    # Not being fond
-    def get_block(self, block_index: str) -> dict:
+    def get_block(self, block_index: str, api_timeout: int = 1) -> dict:
         """Get a block from the chain
 
         Parameters
@@ -14,19 +13,21 @@ class Node():
         block_index : str
             Block index of the block to be queried 
 
+        api_timeout : int, optional
+            Timeout for the API call, default is 1 second
+
         Raises
         ------
         Exception
             If the passed URL for the node cannot be found 
         """
         path = F'/get-block?block_index={block_index}'
-        response = requests.get(self.url + path, timeout=1)
+        response = requests.get(self.url + path, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    # Not being found
-    def get_transaction(self, transaction_code: str) -> dict:
+    def get_transaction(self, transaction_code: str, api_timeout: int = 1) -> dict:
         """Get transaction details from the chain
 
         Parameters
@@ -34,24 +35,30 @@ class Node():
         transaction_code : str
             transaction code for transaction to be quiered 
 
+        api_timeout : int, optional
+            Timeout for the API call, default is 1 second
+
         Raises
         ------
         Exception
             If the passed URL for the node cannot be found
         """
         path = F'/get-transaction?transaction_code={transaction_code}'
-        response = requests.get(self.url + path, timeout=1)
+        response = requests.get(self.url + path, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def get_wallet(self, wallet_address: str) -> dict:
+    def get_wallet(self, wallet_address: str, api_timeout: int = 1) -> dict:
         """"Get a wallet details from the chain
 
         Parameters
         ----------
         wallet_address : str
             Wallet address for details to be queried 
+
+        api_timeout : int, optional
+            Timeout for the API call, default is 1 second
 
         Raises
         ------
@@ -76,18 +83,21 @@ class Node():
         }
         """
         path = F'/get-wallet?wallet_address={wallet_address}'
-        response = requests.get(self.url + path, timeout=1)
+        response = requests.get(self.url + path, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def get_token(self, token_code: str) -> dict:
+    def get_token(self, token_code: str, api_timeout: int = 1) -> dict:
         """"Get a token details from the chain
 
         Parameters
         ----------
         token_code : str
             token code for details to be queried 
+
+        api_timeout : int, optional
+            Timeout for the API call, default is 1 second
 
         Raises
         ------
@@ -112,12 +122,12 @@ class Node():
         } 
         """
         path = F'/get-token?token_code={token_code}'
-        response = requests.get(self.url + path, timeout=1)
+        response = requests.get(self.url + path, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def get_balances(self, wallet_address: str, balance_type: str = 'TOKEN_IN_WALLET', token_code: str = 'NWRL') -> dict:
+    def get_balances(self, wallet_address: str, balance_type: str = 'TOKEN_IN_WALLET', token_code: str = 'NWRL', api_timeout: int = 3) -> dict:
         """Get various balances of a token in wallet
 
         Parameters
@@ -131,6 +141,9 @@ class Node():
         token_code : str  
             token code for balance to be returned, default is 'NWRL'
 
+        api_timeout : int, optional
+            Timeout for the API call, default is 1 second
+
         Raises
         ------
         Exception
@@ -143,18 +156,21 @@ class Node():
         }
         """
         balance_path = F'/get-balances?balance_type={balance_type}&token_code={token_code}&wallet_address={wallet_address}'
-        response = requests.get(self.url + balance_path, timeout=1)
+        response = requests.get(self.url + balance_path, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def get_contract(self, contract_address: str):
+    def get_contract(self, contract_address: str, api_timeout: int = 1):
         """Get contract details from the chain
 
         Parameters
         ----------
         contract_address : str
             contract adress of contract to be queried 
+
+        api_timeout : int, optional
+            Timeout for the API call, default is 1 second
 
         Raises
         ------
@@ -163,12 +179,12 @@ class Node():
 
         """
         path = F'/get-contract?contract_address={contract_address}'
-        response = requests.get(self.url + path, timeout=1)
+        response = requests.get(self.url + path, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def get_trustscore_pid(self, destination_person_id: str, source_person_id: str = 'pi1111111111111111111111111111111111111112'):
+    def get_trustscore_pid(self, destination_person_id: str, source_person_id: str = 'pi1111111111111111111111111111111111111112', api_timeout: int = 1):
         """Get a trust score. Default source_person_id is network trust manager
 
         Parameters
@@ -179,6 +195,9 @@ class Node():
         source_person_id : str
             id of node to get trust score from, default is  'pi1111111111111111111111111111111111111112'
 
+        api_timeout : int, optional
+            Timeout for the API call, default is 1 second
+
         Raises
         ------
         Exception
@@ -186,12 +205,12 @@ class Node():
 
         """
         path = F'/get-trustscore-pid?destination_person_id={destination_person_id}&source_person_id={source_person_id}'
-        response = requests.get(self.url + path)
+        response = requests.get(self.url + path, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def get_trustscore_wallets(self, src_wallet_address: str, dst_wallet_address: str):
+    def get_trustscore_wallets(self, src_wallet_address: str, dst_wallet_address: str, api_timeout: int = 1):
         """Get a trust score
 
         Parameters
@@ -202,6 +221,9 @@ class Node():
         src_wallet_address : str
             wallet address of node to get trust score from 
 
+        api_timeout : int, optional
+            Timeout for the API call, default is 1 second
+
         Raises
         ------
         Exception
@@ -209,31 +231,31 @@ class Node():
 
         """
         path = F'/get-trustscore-pid?src_wallet_address={src_wallet_address}&dst_wallet_address={dst_wallet_address}'
-        response = requests.get(self.url + path, timeout=1)
+        response = requests.get(self.url + path, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def get_sc_state(self, sc_state, contract_address, lookup_field, lookup_value):
+    def get_sc_state(self, sc_state, contract_address, lookup_field, lookup_value, api_timeout: int = 1):
         response = requests.get(
             self.url + f"/sc-state?table_name={sc_state}&contract_address={contract_address}&unique_column={lookup_field}&unique_value={lookup_value}",
-            timeout=1)
+            timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def submit_transaction(self, transaction, timeout=1):
+    def submit_transaction(self, transaction, api_timeout: int = 1):
         path = '/submit-transaction'
         response = requests.post(
-            self.url + path, json=transaction, timeout=timeout)
+            self.url + path, json=transaction, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
 
-    def submit_transactions(self, transactions, timeout=1):
+    def submit_transactions(self, transactions, api_timeout: int = 1):
         path = '/submit-transaction-batch'
         response = requests.post(
-            self.url + path, json=transactions, timeout=timeout)
+            self.url + path, json=transactions, timeout=api_timeout)
         if response.status_code != 200:
             raise Exception('Error calling node: ', response.text)
         return response.json()
